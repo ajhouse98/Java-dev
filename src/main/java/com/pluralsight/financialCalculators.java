@@ -6,16 +6,11 @@ public class financialCalculators {
     private static final int Months_IN_A_Year = 12;
     public static void main(String[] args) {
 
-        /**
-         * Prompt user to select which calculator do they want?
-         * 2-3 calculator options
-         */
-
-        // ask user what cal would he like to use?
+        // ask user what calculator would they like to use?
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Which calculator would you like to use, (1-Mortgage or 2-CD calculator) ? ");
+        System.out.print("Which calculator would you like to use, (1-Mortgage or 2-CD calculator)? ");
 
         int command = scanner.nextInt();
         if (command == 1) {
@@ -38,27 +33,27 @@ public class financialCalculators {
         double principal = scanner.nextDouble();
 
         System.out.print("Enter the annual interest rate: ");
-        float annualInterestRate = scanner.nextFloat();
+        double annualInterestRate = scanner.nextFloat();
 
         System.out.print("Enter the term in years: ");
         int termInYears = scanner.nextInt();
 
-        float monthlyInterestRate = annualInterestRate / Months_IN_A_Year;
+        double monthlyInterestRate = annualInterestRate / Months_IN_A_Year;
         int numberOfPayments = termInYears * Months_IN_A_Year;
 
         double monthlyPayment = principal * (
-                (monthlyInterestRate * (Math.pow(1 + monthlyInterestRate, numberOfPayments))) /
+                (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)) /
                         ((Math.pow(1 + monthlyInterestRate, numberOfPayments)) - 1)
                 );
 
-        // Round up monthlyPayment
-        monthlyPayment = Math.ceil(monthlyPayment);
+            double totalInterest = principal *
+                    Math.pow(1 + monthlyInterestRate, numberOfPayments) - principal;
 
-        System.out.println("Monthly payment: " + monthlyPayment);
+        System.out.printf("Monthly payment: %.2f\n", monthlyPayment);
+        System.out.printf("Total interest paid: %.2f\n", totalInterest);
     }
 
     public static void CDCalculator() {
-
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter the Deposit amount: ");
@@ -72,13 +67,17 @@ public class financialCalculators {
 
         int compoundPerYear = 365;
 
-        //Calculate compound interest
+
         double ratePerPeriod = annualRate / compoundPerYear;
-        int totalPeriods = (int) (compoundPerYear * years);
+        double totalPeriods = compoundPerYear * years;
+
+        // Total amount of time, money invested for, in years.
         double amount = principal * Math.pow(1 + ratePerPeriod, totalPeriods);
 
-        amount = Math.ceil(amount);
+        // Total amount of interest earned
+        double totalInterest = amount - principal;
 
-        System.out.println("The future value of the investment " + amount);
+        System.out.printf("The future value of the investment: %.2f\n", amount);
+        System.out.printf("Total interest earned: %.2f\n", totalInterest);
     }
 }
